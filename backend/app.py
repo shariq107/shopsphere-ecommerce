@@ -8,12 +8,21 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = "shopsphere-local-dev-secret-2026"
 
-CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+CORS(
+    app,
+    supports_credentials=True,
+    origins=[
+        "http://localhost:5173",
+        "https://shopsphere-ecommerce-zeta.vercel.app"
+    ]
+)
+
 app.config["SESSION_COOKIE_HTTPONLY"] = True
-app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["SESSION_COOKIE_SECURE"] = False
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
+app.config["SESSION_COOKIE_SECURE"] = True
 
 DATABASE = os.path.join(os.path.dirname(__file__), "shopsphere.db")
 ORDER_STATUSES = ["Placed", "Processing", "Shipped", "Delivered", "Cancelled"]
