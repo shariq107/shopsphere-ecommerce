@@ -1,4 +1,4 @@
-
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./App.css";
@@ -130,7 +130,7 @@ function App() {
   }, [cartItems]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(`${API_URL}/api/products`)
       .then(response => {
         if (!response.ok) throw new Error("Failed to fetch products");
         return response.json();
@@ -148,7 +148,7 @@ function App() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch("http://localhost:5000/api/customer/me", {
+    fetch(`${API_URL}/api/customer/me`, {
       method: "GET",
       credentials: "include"
     })
@@ -243,7 +243,7 @@ function App() {
  
 const openProduct = async (product) => {
   try {
-    const response = await fetch("http://localhost:5000/api/products");
+    const response = await fetch(`${API_URL}/api/products`);
     const latestProducts = await response.json();
 
     const latestProduct = latestProducts.find(

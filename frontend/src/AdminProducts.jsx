@@ -1,7 +1,6 @@
+import { API_URL } from "./config";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const API_URL = "http://localhost:5000";
 const LOW_STOCK_LIMIT = 5;
 
 const emptyForm = {

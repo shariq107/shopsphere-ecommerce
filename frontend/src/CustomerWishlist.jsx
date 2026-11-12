@@ -1,10 +1,8 @@
+import { API_URL } from "./config";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CustomerWishlist.css";
-
-const API_URL = "http://localhost:5000";
-
 function CustomerWishlist() {
     const navigate = useNavigate();
 

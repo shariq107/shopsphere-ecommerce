@@ -1,9 +1,10 @@
+import { API_URL } from "./config";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CustomerReviews.css";
 
-const API = "http://localhost:5000";
+const API = API_URL;
 
 function CustomerReviews() {
     const navigate = useNavigate();

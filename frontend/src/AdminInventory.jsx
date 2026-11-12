@@ -1,9 +1,7 @@
+import { API_URL } from "./config";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminManagement.css";
-
-const API_URL = "http://localhost:5000";
-
 function AdminInventory() {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);

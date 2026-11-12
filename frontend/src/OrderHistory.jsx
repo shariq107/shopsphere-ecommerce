@@ -1,10 +1,8 @@
+import { API_URL } from "./config";
 
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./OrderHistory.css";
-
-const API_URL = "http://localhost:5000";
-
 function OrderHistory() {
     const navigate = useNavigate();
 

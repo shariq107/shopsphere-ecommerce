@@ -1,7 +1,5 @@
+import { API_URL } from "./config";
 import React, { useEffect, useState } from "react";
-
-const API_URL = "http://localhost:5000";
-
 function Reports() {
     const [report, setReport] = useState(null);
     const [startDate, setStartDate] = useState("");

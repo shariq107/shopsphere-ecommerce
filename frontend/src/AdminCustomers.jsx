@@ -1,7 +1,5 @@
+import { API_URL } from "./config";
 import { useEffect, useState } from "react";
-
-const API_URL = "http://localhost:5000";
-
 function AdminCustomers() {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);

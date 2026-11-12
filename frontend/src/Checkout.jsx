@@ -1,9 +1,7 @@
+import { API_URL } from "./config";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Checkout.css";
-
-const API_URL = "http://localhost:5000";
-
 function Checkout() {
     const navigate = useNavigate();
 

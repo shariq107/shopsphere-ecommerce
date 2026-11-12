@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +19,7 @@ function AdminDashboard() {
         const fetchStats = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:5000/api/admin/dashboard-stats",
+                    `${API_URL}/api/admin/dashboard-stats`,
                     {
                         credentials: "include"
                     }
@@ -60,7 +61,7 @@ function AdminDashboard() {
 
     const handleLogout = async () => {
         try {
-            await fetch("http://localhost:5000/api/admin/logout", {
+            await fetch(`${API_URL}/api/admin/logout`, {
                 method: "POST",
                 credentials: "include"
             });

@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -29,7 +30,7 @@ function Login() {
         setMessage("");
 
         try {
-            const response = await fetch("http://localhost:5000/api/login", {
+            const response = await fetch(`${API_URL}/api/login`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

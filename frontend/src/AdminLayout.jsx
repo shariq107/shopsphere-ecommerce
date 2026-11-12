@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./AdminLayout.css";
 
@@ -16,7 +17,7 @@ function AdminLayout() {
 
     const handleLogout = async () => {
         try {
-            await fetch("http://localhost:5000/api/admin/logout", {
+            await fetch(`${API_URL}/api/admin/logout`, {
                 method: "POST",
                 credentials: "include"
             });
