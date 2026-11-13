@@ -1880,5 +1880,8 @@ def get_admin_reports():
 
 
 if __name__ == "__main__":
-    initialize_database()
+    # Initialize database when the app starts (including Gunicorn)
+initialize_database()
+
+if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1", port=5000)
