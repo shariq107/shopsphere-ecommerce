@@ -1,0 +1,28 @@
+ShopSphere source inspection (uploaded archive)
+
+Git metadata in the ZIP:
+- Branch: main
+- HEAD and origin/main snapshot: fbfd6cb6ac9defc319f83573f3aabdf364cf535d
+- Commit date: 2026-11-12 17:34:32 +05:30
+- Commit subject: Fix production CORS configuration
+- Uploaded working files contain local modifications beyond that commit.
+
+Current uploaded SQLite database:
+- backend/shopsphere.db and backend/shopsphere_backup.db have identical SHA-256 hashes.
+- Both contain 12 tables and 273 rows, not 269.
+- PRAGMA foreign_key_check returned no violations.
+- The SQLite sequence high-water marks differ from row counts / sometimes max IDs, so migration must preserve sqlite_sequence values.
+
+Required database changes:
+- Select PostgreSQL through DATABASE_URL while retaining SQLite locally when DATABASE_URL is absent.
+- Create all 12 PostgreSQL tables with the existing constraints and relationships.
+- Translate SQLite ? parameters, INSERT OR IGNORE, datetime/date functions, and PRAGMA-based schema checks.
+- Preserve DictRow-compatible integer and named row access.
+- Replace SQLite lastrowid behavior with PostgreSQL INSERT ... RETURNING id.
+- Catch both SQLite and PostgreSQL integrity exceptions.
+- Initialize schema on Gunicorn import without dropping data.
+- Copy all rows and preserve IDs / identity sequence high-water marks.
+
+Existing frontend architecture:
+- Cart and wishlist are browser localStorage features, not PostgreSQL-backed APIs/tables.
+- Admin categories are derived from product.category; there is no separate categories table in this schema.

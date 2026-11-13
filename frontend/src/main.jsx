@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import App from "./App";
+import ProductPage from "./ProductPage";
+import BagDrawer from "./components/BagDrawer";
+import { StoreProvider } from "./store/StoreContext";
 import Register from "./Register";
 import Login from "./Login";
 import Checkout from "./Checkout";
@@ -27,8 +30,10 @@ import Reports from "./Reports";
 function Main() {
     return (
         <BrowserRouter>
+            <StoreProvider>
             <Routes>
                 <Route path="/" element={<App />} />
+                <Route path="/product/:id" element={<ProductPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/checkout" element={<Checkout />} />
@@ -54,6 +59,8 @@ function Main() {
                     </Route>
                 </Route>
             </Routes>
+            <BagDrawer />
+            </StoreProvider>
         </BrowserRouter>
     );
 }

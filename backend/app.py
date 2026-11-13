@@ -7,9 +7,18 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from postgres_support import (
+    USING_POSTGRES,
+    DB_INTEGRITY_ERRORS,
+    get_postgres_db,
+    initialize_postgres_database,
+)
+
+print("DATABASE MODE:", "PostgreSQL" if USING_POSTGRES else "SQLite")
+
 app = Flask(__name__)
 
-app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "local-development-only-change-this"
 
 CORS(
     app,
@@ -21,14 +30,19 @@ CORS(
 )
 
 app.config["SESSION_COOKIE_HTTPONLY"] = True
-app.config["SESSION_COOKIE_SAMESITE"] = "None"
-app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "None" if os.environ.get("RENDER") == "true" else "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("RENDER") == "true"
 
 DATABASE = os.path.join(os.path.dirname(__file__), "shopsphere.db")
 ORDER_STATUSES = ["Placed", "Processing", "Shipped", "Delivered", "Cancelled"]
 
 
 def get_db():
+    # DATABASE_URL selects Neon/PostgreSQL. Without it, keep using the original
+    # local SQLite database exactly as before.
+    if USING_POSTGRES:
+        return get_postgres_db()
+
     connection = sqlite3.connect(DATABASE)
     connection.row_factory = sqlite3.Row
     return connection
@@ -57,6 +71,10 @@ def customer_required(function):
 
 
 def initialize_database():
+    if USING_POSTGRES:
+        initialize_postgres_database()
+        return
+
     connection = get_db()
     cursor = connection.cursor()
 
@@ -485,7 +503,7 @@ def register():
             }
         }), 201
 
-    except sqlite3.IntegrityError:
+    except DB_INTEGRITY_ERRORS:
         return jsonify({"message": "Email already registered"}), 409
 
     finally:
@@ -1507,7 +1525,7 @@ def add_product_review():
             "review": result
         }), 201
 
-    except sqlite3.IntegrityError:
+    except DB_INTEGRITY_ERRORS:
         connection.close()
         return jsonify({
             "message": "You have already reviewed this product. You can edit your existing review."
@@ -1879,6 +1897,11 @@ def get_admin_reports():
     })
 
 
+# Initialize the schema when Gunicorn imports this module on Render.
+# Existing tables/records are preserved; sample products are added only if
+# the products table is empty.
+initialize_database()
+
+
 if __name__ == "__main__":
-    initialize_database()
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1", port=5000)
