@@ -1879,8 +1879,7 @@ def get_admin_reports():
     })
 
 
-if __name__ == "__main__":
-    # Initialize database when the app starts (including Gunicorn)
+# Initialize database when the app starts (including Gunicorn)
 initialize_database()
 
 if __name__ == "__main__":
